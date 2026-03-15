@@ -185,8 +185,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 This project used AI tools during development:
 
-- **Claude (Anthropic)**: Architecture planning, code generation assistance, pitch narrative development, strategic analysis of challenge brief and scoring rubric
-- **GitHub Copilot**: Code completion and suggestions (if used by team members)
+- **Chatgpt**: Architecture planning, code generation assistance, pitch narrative development, strategic analysis of challenge brief and scoring rubric
 
 All AI-generated code was reviewed, tested, and modified by team members. The problem analysis, user research conversations with GMHSC liaisons, design decisions, and final pitch content reflect the team's own understanding of the challenge.
 
