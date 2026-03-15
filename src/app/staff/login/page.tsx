@@ -69,7 +69,7 @@ export default function StaffLoginPage() {
           <div className="w-14 h-14 bg-hope-blue rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Building2 className="w-7 h-7 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Staff Portal</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Organization Portal</h1>
           <p className="text-sm text-gray-500 mt-2">
             Access your organization's workspace to manage donations and needs.
           </p>

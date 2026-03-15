@@ -25,7 +25,7 @@ const links = [
   },
   {
     href: "/donor/start",
-    label: "Donor Board",
+    label: "Donor",
     shortLabel: "Donors",
     match: "/donor",
     hoverClass:
@@ -50,11 +50,9 @@ export function NavBar() {
             priority
           />
         </Link>
-
         <nav className="flex items-center gap-2">
           {links.map((link) => {
             const isActive = pathname.startsWith(link.match);
-
             return (
               <Link
                 key={link.href}

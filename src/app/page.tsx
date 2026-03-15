@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Building2, BarChart3, Heart } from "lucide-react";
 
 export default function HomePage() {
@@ -10,13 +9,10 @@ export default function HomePage() {
       <div className="max-w-2xl mx-auto mt-6 sm:mt-10">
         <div className="text-center mb-3">
           <div className="logo-reveal flex justify-center mb-1">
-            <Image
-              src="/logo.png"
+            <img
+              src="/hopelink_logo.png"
               alt="HopeLink logo"
-              width={300}
-              height={120}
-              className="h-36 sm:h-28 w-auto object-contain"
-              priority
+              className="h-36 w-[300px] object-contain"
             />
           </div>
 
