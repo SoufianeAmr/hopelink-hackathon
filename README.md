@@ -6,7 +6,6 @@ Real-time donation coordination for the Greater Moncton Homelessness Steering Co
 
 Hack4Change 2026 | March 13-15 | Venn Innovation, Moncton
 
-
 ## The Problem
 
 28 organizations in the GMHSC network coordinate donated goods through phone calls, texts, and emails. There is no shared visibility into what's available, what's needed, or what's expiring.
@@ -25,7 +24,6 @@ HopeLink is a lightweight coordination hub that gives every GMHSC organization i
 A smart match engine automatically connects surplus to shortage before items go to waste.
 
 HopeLink does not replace communication between organizations. It tells them **who to call and why**.
-ß
 
 ## Impact
 
@@ -187,7 +185,7 @@ sequenceDiagram
 ## Tech Stack
 
 | Layer | Technology |
-|||
+|------|------------|
 | Frontend | Next.js 14 (App Router) + Tailwind CSS |
 | Backend | Next.js API Routes |
 | Database | SQLite via Prisma ORM (PostgreSQL-ready) |
@@ -196,10 +194,11 @@ sequenceDiagram
 | Reports | Client-side PDF generation (zero dependencies) |
 
 **Why this stack:**
-- **Single deployable unit** — frontend and backend in one repo, one deploy command
-- **SQLite for dev, PostgreSQL for production** — zero database setup during development
-- **Vercel free tier** — zero ongoing hosting cost, auto-deploys from GitHub
-- **No external API dependencies** — fully self-contained
+
+- **Single deployable unit**: frontend and backend in one repo, one deploy command
+- **SQLite for dev, PostgreSQL for production**: zero database setup during development
+- **Vercel free tier**: zero ongoing hosting cost, auto-deploys from GitHub
+- **No external API dependencies**: fully self-contained
 
 ## Setup
 
@@ -222,7 +221,7 @@ Open [http://localhost:3000](http://localhost:3000)
 ### Commands
 
 | Command | Description |
-|||
+|--------|-------------|
 | `npm run dev` | Start development server |
 | `npm run build` | Build for production |
 | `npm run setup` | Generate Prisma client, push schema, seed demo data |
@@ -277,7 +276,6 @@ Open [http://localhost:3000](http://localhost:3000)
 This project used AI tools during development:
 
 - **ChatGPT**: Architecture planning, code generation assistance, pitch narrative development
-- **Claude**: Code generation, debugging, feature implementation
 
 All AI-generated code was reviewed, tested, and modified by team members. The problem analysis, design decisions, and final pitch content reflect the team's own understanding of the challenge.
 

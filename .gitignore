@@ -13,9 +13,6 @@ node_modules
 .env
 .env.local
 
-# local tools
-.claude
-
 # hackathon docs
 DEMO-SCRIPT.md
 JUDGE-DEFENSE.md
