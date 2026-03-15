@@ -21,15 +21,15 @@ export function PulseMetrics({
   return (
     <div className="bg-white rounded-lg border p-4 mb-6">
       <div className="flex items-center gap-2 mb-3">
-        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+        <div className="w-2 h-2 bg-hope-blue rounded-full animate-pulse" />
         <h2 className="font-semibold text-gray-900 text-sm">Network Pulse</h2>
-        <span className="ml-auto text-2xl font-bold text-blue-600">{matchRate}%</span>
+        <span className="ml-auto text-2xl font-bold text-hope-blue">{matchRate}%</span>
         <span className="text-xs text-gray-500">needs matched</span>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <MetricBox label="Active Needs" value={activeNeeds} color="text-red-600" />
         <MetricBox label="Items Available" value={activeHaves} color="text-green-600" />
-        <MetricBox label="Matches Found" value={pendingMatches} color="text-blue-600" />
+        <MetricBox label="Matches Found" value={pendingMatches} color="text-hope-blue" />
         <MetricBox label="Expiring Soon" value={expiringItems} color="text-orange-600" />
       </div>
     </div>

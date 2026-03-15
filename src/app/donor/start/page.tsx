@@ -11,7 +11,7 @@ export default function DonorStartPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 bg-hope-purple rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Heart className="w-7 h-7 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Community Donor Board</h1>
@@ -23,8 +23,8 @@ export default function DonorStartPage() {
         <div className="bg-white rounded-xl border shadow-sm p-6">
           <div className="space-y-4 mb-6">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                <ShieldCheck className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 bg-hope-purple-light rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <ShieldCheck className="w-4 h-4 text-hope-purple" />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">No account required</p>
@@ -35,8 +35,8 @@ export default function DonorStartPage() {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                <Eye className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 bg-hope-purple-light rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <Eye className="w-4 h-4 text-hope-purple" />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">See real-time needs</p>
@@ -47,8 +47,8 @@ export default function DonorStartPage() {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                <Clock className="w-4 h-4 text-purple-600" />
+              <div className="w-8 h-8 bg-hope-purple-light rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <Clock className="w-4 h-4 text-hope-purple" />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">Help in under 30 seconds</p>
@@ -61,14 +61,14 @@ export default function DonorStartPage() {
 
           <button
             onClick={() => router.push("/donate")}
-            className="w-full bg-purple-600 text-white rounded-lg py-3 text-sm font-semibold hover:bg-purple-700 transition-colors"
+            className="w-full bg-hope-purple text-white rounded-lg py-3 text-sm font-semibold hover:bg-hope-purple-dark transition-colors"
           >
             Continue to Donor Board
           </button>
         </div>
 
-        <div className="mt-4 bg-purple-50 border border-purple-100 rounded-xl p-4">
-          <p className="text-xs text-purple-700">
+        <div className="mt-4 bg-hope-purple-light border border-hope-purple/15 rounded-xl p-4">
+          <p className="text-xs text-hope-purple">
             <strong>Privacy note:</strong> HopeLink tracks donated items, not people.
             No personal information about individuals experiencing homelessness is
             collected or stored.

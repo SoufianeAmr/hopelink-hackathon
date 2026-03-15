@@ -51,6 +51,8 @@ interface DonorOfferData {
   quantity: number;
   category: string;
   logistics: string;
+  imageUrl: string;
+  needPost: { id: string; item: string; quantity: number; category: string } | null;
 }
 
 interface FeedEventData {
@@ -76,6 +78,7 @@ export default function StaffPage() {
   const [orgFeed, setOrgFeed] = useState<FeedEventData[]>([]);
   const [loading, setLoading] = useState(false);
   const [matchNotice, setMatchNotice] = useState<string | null>(null);
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
 
   // Check for saved staff session — redirect to login if not found
   useEffect(() => {
@@ -291,17 +294,20 @@ export default function StaffPage() {
 
       {/* Match notification banner — key demo moment */}
       {matchNotice && (
-        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4 animate-pulse">
-          <p className="text-blue-800 font-semibold text-sm">{matchNotice}</p>
+        <div className="mb-6 bg-hope-blue-light border border-hope-blue/20 rounded-lg p-4 animate-pulse">
+          <p className="text-hope-blue-dark font-semibold text-sm">{matchNotice}</p>
         </div>
       )}
 
       {/* Matches — organizations coordinate directly */}
       {activeMatches.length > 0 && (
         <div className="mb-6">
-          <h2 className="font-semibold text-gray-800 mb-3 text-sm">
-            Matches ({activeMatches.length})
-          </h2>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-2 h-2 bg-hope-blue rounded-full animate-pulse" />
+            <h2 className="font-semibold text-gray-800 text-sm">
+              Matches ({activeMatches.length})
+            </h2>
+          </div>
           <div className="space-y-3">
             {activeMatches.map((match) => (
               <MatchCard
@@ -338,24 +344,44 @@ export default function StaffPage() {
           </h2>
           <div className="space-y-2">
             {donorOffers.map((offer) => (
-              <div key={offer.id} className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+              <div key={offer.id} className="bg-hope-purple-light border border-hope-purple/20 rounded-lg p-3">
                 <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <p className="text-sm font-medium text-purple-900">
-                      {offer.donorName} offers {offer.item} ({offer.quantity})
-                    </p>
-                    <p className="text-xs text-purple-700 mt-1">
-                      Contact: {offer.donorContact}
-                      {offer.logistics && offer.logistics !== "either" && (
-                        <span className="ml-2 text-purple-500">
-                          ({offer.logistics === "pickup" ? "Can pick up" : "Can deliver"})
-                        </span>
+                  <div className="flex items-start gap-2.5 flex-1 min-w-0">
+                    {offer.imageUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setLightboxUrl(offer.imageUrl)}
+                        className="shrink-0"
+                      >
+                        <img
+                          src={offer.imageUrl}
+                          alt="Donor photo"
+                          className="w-14 h-14 object-cover rounded-lg border border-hope-purple/20 hover:opacity-80 transition-opacity"
+                        />
+                      </button>
+                    )}
+                    <div>
+                      <p className="text-sm font-medium text-hope-purple-dark">
+                        {offer.donorName} offers {offer.item} ({offer.quantity})
+                      </p>
+                      {offer.needPost && (
+                        <p className="text-xs text-hope-purple mt-0.5">
+                          For your need: {offer.needPost.item} ({offer.needPost.quantity} needed)
+                        </p>
                       )}
-                    </p>
+                      <p className="text-xs text-hope-purple mt-1">
+                        Contact: {offer.donorContact}
+                        {offer.logistics && offer.logistics !== "either" && (
+                          <span className="ml-2 text-hope-purple/70">
+                            ({offer.logistics === "pickup" ? "Pickup required" : "Delivery available"})
+                          </span>
+                        )}
+                      </p>
+                    </div>
                   </div>
                   <button
                     onClick={() => handleAcceptOffer(offer.id)}
-                    className="shrink-0 bg-purple-600 text-white text-xs font-medium px-3 py-1.5 rounded-md hover:bg-purple-700 transition-colors"
+                    className="shrink-0 bg-hope-purple text-white text-xs font-medium px-3 py-1.5 rounded-md hover:bg-hope-purple-dark transition-colors"
                   >
                     Accept
                   </button>
@@ -406,23 +432,40 @@ export default function StaffPage() {
             <div className="space-y-2">
               {havePosts.map((post) => (
                 <div key={post.id} className="bg-white border rounded-lg p-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-gray-900">{post.item}</p>
-                    {post.expiryDate && (
-                      <span
-                        className={cn(
-                          "text-xs px-2 py-0.5 rounded-full font-medium",
-                          expiryColor(post.expiryDate)
-                        )}
+                  <div className="flex items-start gap-2.5">
+                    {post.imageUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setLightboxUrl(post.imageUrl)}
+                        className="shrink-0"
                       >
-                        {expiryLabel(post.expiryDate)}
-                      </span>
+                        <img
+                          src={post.imageUrl}
+                          alt="Item photo"
+                          className="w-12 h-12 object-cover rounded-lg border hover:opacity-80 transition-opacity"
+                        />
+                      </button>
                     )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium text-gray-900">{post.item}</p>
+                        {post.expiryDate && (
+                          <span
+                            className={cn(
+                              "text-xs px-2 py-0.5 rounded-full font-medium",
+                              expiryColor(post.expiryDate)
+                            )}
+                          >
+                            {expiryLabel(post.expiryDate)}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {post.category} &middot; Qty: {post.quantity}
+                        {post.condition && <span> &middot; {post.condition}</span>}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {post.category} &middot; Qty: {post.quantity}
-                    {post.condition && <span> &middot; {post.condition}</span>}
-                  </p>
                 </div>
               ))}
             </div>
@@ -456,6 +499,21 @@ export default function StaffPage() {
 
       {loading && (
         <p className="text-center text-gray-400 text-sm mt-4">Refreshing...</p>
+      )}
+
+      {/* Photo lightbox */}
+      {lightboxUrl && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+          onClick={() => setLightboxUrl(null)}
+        >
+          <img
+            src={lightboxUrl}
+            alt="Item photo"
+            className="max-w-full max-h-[80vh] rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
       )}
     </div>
   );

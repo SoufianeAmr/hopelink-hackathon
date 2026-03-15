@@ -11,10 +11,10 @@ interface OrgActivityItemProps {
 const labelConfig: Record<string, { label: string; bg: string; text: string }> = {
   post_need:           { label: "NEED",     bg: "bg-red-100",     text: "text-red-700" },
   post_have:           { label: "AVAILABLE", bg: "bg-green-100",  text: "text-green-700" },
-  match_found:         { label: "MATCH",    bg: "bg-blue-100",    text: "text-blue-700" },
+  match_found:         { label: "MATCH",    bg: "bg-hope-blue-light",    text: "text-hope-blue" },
   transfer_requested:  { label: "REQUEST",  bg: "bg-amber-100",   text: "text-amber-700" },
-  match_resolved:      { label: "TRANSFER", bg: "bg-emerald-100", text: "text-emerald-700" },
-  donor_offer:         { label: "DONOR",    bg: "bg-purple-100",  text: "text-purple-700" },
+  match_resolved:      { label: "TRANSFER", bg: "bg-hope-green-light", text: "text-hope-green" },
+  donor_offer:         { label: "DONOR",    bg: "bg-hope-purple-light",  text: "text-hope-purple" },
   expiry_alert:        { label: "URGENT",   bg: "bg-orange-100",  text: "text-orange-700" },
 };
 

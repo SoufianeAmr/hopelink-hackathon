@@ -3,14 +3,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 /**
- * Demo seed data — tells a compelling story for judges.
+ * Demo seed data — platform feels alive, but key coordination actions are left for live demo.
  *
- * Scenario: It's mid-March. The network has been using HopeLink for a week.
- * Several matches have been found. Two items are expiring. Multiple critical needs exist.
- * One match has already been resolved (showing the full lifecycle).
- *
- * Rubric: Pitch — pre-seeded data makes the demo feel like a live system.
- * Rubric: Impact — realistic data proves the concept works in the real world.
+ * Seeded: organizations, NEED posts, HAVE posts, lightweight feed history.
+ * NOT seeded: matches, donor offers, transfers, fulfillment — these are demo'd live.
  */
 async function main() {
   // Clear existing data
@@ -420,140 +416,15 @@ async function main() {
 
   console.log(`Created ${haves.length} have posts`);
 
-  // === MATCHES ===
-  // Create matches that the system "found"
-  const matchPairs: [typeof haves[0], typeof needs[0]][] = [
-    [haves[0], needs[0]],   // YMCA coats → House of Naz coats
-    [haves[2], needs[1]],   // YMCA blankets → House of Naz blankets
-    [haves[6], needs[2]],   // Harvest soup → House of Naz soup
-    [haves[1], needs[4]],   // YMCA socks → Rising Tide socks
-    [haves[4], needs[3]],   // Crossroads hygiene → Rising Tide hygiene (EXPIRING!)
-    [haves[9], needs[5]],   // Salvus diapers → Crossroads diapers
-    [haves[3], needs[8]],   // YMCA toothbrushes → HDC toothbrushes
-    [haves[8], needs[6]],   // Harvest cleaning → YWCA dish soap (same: Kitchen)
-    [haves[5], needs[7]],   // Crossroads yogurt → YWCA fruit (same: Food Perishable, EXPIRING!)
-  ];
-
-  // Some matches are "requested" to show the transfer request flow
-  const requestedIndices = new Set([0, 4]); // coats and hygiene kits
-  const matches = [];
-  for (let i = 0; i < matchPairs.length; i++) {
-    const [havePost, needPost] = matchPairs[i];
-    const match = await prisma.match.create({
-      data: {
-        havePostId: havePost.id,
-        needPostId: needPost.id,
-        status: requestedIndices.has(i) ? "requested" : "pending",
-        createdAt: hoursAgo(Math.random() * 4 + 1),
-      },
-    });
-    matches.push(match);
-  }
-
-  // Resolve one match to show the lifecycle — JHS boots → Youth Impact boots
-  const resolvedMatch = await prisma.match.create({
-    data: {
-      havePostId: haves[11].id, // JHS winter boots
-      needPostId: needs[9].id,  // Youth Impact winter boots
-      status: "resolved",
-      createdAt: hoursAgo(6),
-      resolvedAt: hoursAgo(3),
-    },
-  });
-
-  console.log(`Created ${matches.length + 1} matches (2 requested, 1 resolved)`);
-
   // === FEED EVENTS ===
-  // Pre-seed a realistic activity feed
+  // Lightweight passive history only — no matches, no transfers, no donor fulfillment
   const feedEvents = [
-    {
-      type: "transfer_requested",
-      message: "Transfer requested: House of Nazareth wants Winter coats from YMCA Greater Moncton",
-      orgName: "House of Nazareth",
-      category: "Winter Clothing",
-      createdAt: hoursAgo(0.01), // ~1 min ago
-    },
-    {
-      type: "transfer_requested",
-      message: "Transfer requested: Rising Tide wants Hygiene kits from Crossroads for Women",
-      orgName: "Rising Tide",
-      category: "Hygiene Products",
-      createdAt: hoursAgo(0.02),
-    },
-    {
-      type: "match_found",
-      message: "Match: YMCA Greater Moncton has Winter coats → House of Nazareth needs them",
-      orgName: "YMCA Greater Moncton",
-      category: "Winter Clothing",
-      createdAt: hoursAgo(0.03), // ~2 min ago
-    },
     {
       type: "post_need",
       message: "Need: House of Nazareth — Winter coats, kids sizes (10) (CRITICAL)",
       orgName: "House of Nazareth",
       category: "Winter Clothing",
-      createdAt: hoursAgo(0.08), // ~5 min ago
-    },
-    {
-      type: "expiry_alert",
-      message:
-        "URGENT: 45 Hygiene kits at Crossroads for Women expire in 48h — match found with Rising Tide",
-      orgName: "Crossroads for Women",
-      category: "Hygiene Products",
-      createdAt: hoursAgo(0.2), // ~12 min ago
-    },
-    {
-      type: "expiry_alert",
-      message:
-        "URGENT: 30 Yogurt cups at Crossroads for Women expire in 24h — match found with YWCA Moncton",
-      orgName: "Crossroads for Women",
-      category: "Food — Perishable",
-      createdAt: hoursAgo(0.23),
-    },
-    {
-      type: "post_have",
-      message: "Available: Harvest House Atlantic — Canned soup (80)",
-      orgName: "Harvest House Atlantic",
-      category: "Food — Non-Perishable",
-      createdAt: hoursAgo(0.3),
-    },
-    {
-      type: "match_found",
-      message:
-        "Match: Harvest House Atlantic has Canned soup → House of Nazareth needs it",
-      orgName: "Harvest House Atlantic",
-      category: "Food — Non-Perishable",
-      createdAt: hoursAgo(0.33),
-    },
-    {
-      type: "match_found",
-      message: "Match: Salvus has Diapers → Crossroads for Women needs them",
-      orgName: "Salvus",
-      category: "Baby & Children",
-      createdAt: hoursAgo(0.37),
-    },
-    {
-      type: "match_resolved",
-      message:
-        "Resolved: Youth Impact Jeunesse received Winter boots from John Howard Society",
-      orgName: "Youth Impact Jeunesse",
-      category: "Winter Clothing",
-      createdAt: hoursAgo(3),
-    },
-    {
-      type: "post_have",
-      message: "Available: YMCA Greater Moncton — Socks, new packaged (60)",
-      orgName: "YMCA Greater Moncton",
-      category: "General Clothing",
-      createdAt: hoursAgo(1),
-    },
-    {
-      type: "match_found",
-      message:
-        "Match: YMCA Greater Moncton has Socks → Rising Tide needs Socks and underwear",
-      orgName: "YMCA Greater Moncton",
-      category: "General Clothing",
-      createdAt: hoursAgo(1),
+      createdAt: hoursAgo(5),
     },
     {
       type: "post_need",
@@ -563,11 +434,60 @@ async function main() {
       createdAt: hoursAgo(6),
     },
     {
+      type: "post_need",
+      message: "Need: Rising Tide — Socks and underwear (40) (CRITICAL)",
+      orgName: "Rising Tide",
+      category: "General Clothing",
+      createdAt: hoursAgo(10),
+    },
+    {
+      type: "post_need",
+      message: "Need: Crossroads for Women — Diapers, size 3-4 (50)",
+      orgName: "Crossroads for Women",
+      category: "Baby & Children",
+      createdAt: hoursAgo(4),
+    },
+    {
+      type: "post_have",
+      message: "Available: YMCA Greater Moncton — Winter coats, mixed sizes (30)",
+      orgName: "YMCA Greater Moncton",
+      category: "Winter Clothing",
+      createdAt: hoursAgo(24),
+    },
+    {
+      type: "post_have",
+      message: "Available: YMCA Greater Moncton — Socks, new packaged (60)",
+      orgName: "YMCA Greater Moncton",
+      category: "General Clothing",
+      createdAt: hoursAgo(18),
+    },
+    {
+      type: "post_have",
+      message: "Available: Harvest House Atlantic — Canned soup (80)",
+      orgName: "Harvest House Atlantic",
+      category: "Food — Non-Perishable",
+      createdAt: hoursAgo(30),
+    },
+    {
       type: "post_have",
       message: "Available: Crossroads for Women — Hygiene kits (45)",
       orgName: "Crossroads for Women",
       category: "Hygiene Products",
       createdAt: hoursAgo(72),
+    },
+    {
+      type: "post_have",
+      message: "Available: Salvus — Diapers, size 3-5 (30)",
+      orgName: "Salvus",
+      category: "Baby & Children",
+      createdAt: hoursAgo(16),
+    },
+    {
+      type: "post_need",
+      message: "Need: YWCA Moncton — Dish soap and sponges (20)",
+      orgName: "YWCA Moncton",
+      category: "Kitchen & Household",
+      createdAt: hoursAgo(3),
     },
   ];
 
@@ -577,41 +497,31 @@ async function main() {
 
   console.log(`Created ${feedEvents.length} feed events`);
 
-  // === DONOR OFFER (to show the full flow) ===
-  await prisma.donorOffer.create({
-    data: {
-      donorName: "Sarah Mitchell",
-      donorContact: "sarah.m@email.com",
-      category: "Winter Clothing",
-      item: "5 winter coats, adult sizes",
-      quantity: 5,
-      logistics: "delivery",
-      targetOrgId: houseNaz.id,
-      createdAt: hoursAgo(1),
-    },
-  });
-
-  console.log("Created 1 donor offer");
+  // No matches, no donor offers, no transfers — these are created live during demo
 
   // Summary
   console.log("\n=== SEED COMPLETE ===");
   console.log("Organizations: 10");
-  console.log("Need posts: 10 (5 critical, 5 moderate)");
-  console.log("Have posts: 12 (2 with expiry dates)");
-  console.log("Matches: 10 (7 pending, 2 requested, 1 resolved)");
-  console.log(`Feed events: ${feedEvents.length}`);
-  console.log("Donor offers: 1");
+  console.log(`Need posts: ${needs.length} (5 critical, 7 moderate)`);
+  console.log(`Have posts: ${haves.length} (2 with expiry dates)`);
+  console.log("Matches: 0 (created live during demo)");
+  console.log(`Feed events: ${feedEvents.length} (post_need + post_have only)`);
+  console.log("Donor offers: 0 (created live during demo)");
   console.log("\nDemo org codes:");
-  console.log("  hou-naz   — House of Nazareth (shelter, RED — critical needs)");
-  console.log("  ymca-gm   — YMCA Greater Moncton (outreach, GREEN — well stocked)");
-  console.log("  cross-wo  — Crossroads for Women (shelter, YELLOW — expiring items)");
-  console.log("  harv-atl  — Harvest House Atlantic (shelter, GREEN)");
-  console.log("  rise-tid  — Rising Tide (service, RED — critical needs)");
-  console.log("  salvus    — Salvus (service, GREEN)");
-  console.log("  ywca-mon  — YWCA Moncton (shelter, YELLOW)");
-  console.log("  jhs-senb  — John Howard Society (service, GREEN)");
-  console.log("  hdc-monc  — Human Development Council (coordinator, YELLOW)");
-  console.log("  youth-ij  — Youth Impact Jeunesse (service, RED)");
+  console.log("  hou-naz   — House of Nazareth (shelter, critical needs)");
+  console.log("  ymca-gm   — YMCA Greater Moncton (outreach, well stocked)");
+  console.log("  cross-wo  — Crossroads for Women (shelter, expiring items)");
+  console.log("  harv-atl  — Harvest House Atlantic (shelter, surplus)");
+  console.log("  rise-tid  — Rising Tide (service, critical needs)");
+  console.log("  salvus    — Salvus (service, surplus)");
+  console.log("  ywca-mon  — YWCA Moncton (shelter, moderate needs)");
+  console.log("  jhs-senb  — John Howard Society (service, surplus)");
+  console.log("  hdc-monc  — Human Development Council (coordinator)");
+  console.log("  youth-ij  — Youth Impact Jeunesse (service, critical need)");
+  console.log("\nLive demo actions to perform:");
+  console.log("  1. Post a HAVE or NEED → watch match appear");
+  console.log("  2. Donor board → submit offer → staff accepts");
+  console.log("  3. Transfer request → accept → need disappears");
 }
 
 main()

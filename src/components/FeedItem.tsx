@@ -30,11 +30,11 @@ const typeConfig: Record<
   },
   match_found: {
     icon: <Link2 className="w-3.5 h-3.5" />,
-    color: "bg-blue-500",
+    color: "bg-hope-blue",
   },
   match_resolved: {
     icon: <CheckCircle2 className="w-3.5 h-3.5" />,
-    color: "bg-emerald-600",
+    color: "bg-hope-green",
   },
   expiry_alert: {
     icon: <Clock className="w-3.5 h-3.5" />,
@@ -42,7 +42,7 @@ const typeConfig: Record<
   },
   donor_offer: {
     icon: <Heart className="w-3.5 h-3.5" />,
-    color: "bg-purple-500",
+    color: "bg-hope-purple",
   },
 };
 

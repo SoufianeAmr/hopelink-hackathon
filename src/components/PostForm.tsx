@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 import { CATEGORIES, URGENCY_LEVELS, URGENCY_CONFIG } from "@/lib/categories";
 import { cn } from "@/lib/utils";
-import { Camera, X, Upload } from "lucide-react";
+import { PhotoUpload } from "@/components/PhotoUpload";
 
 interface PostFormProps {
   orgCode: string;
@@ -24,45 +24,8 @@ export function PostForm({ orgCode, initialType, onSuccess, onCancel }: PostForm
   const [notes, setNotes] = useState("");
   const [condition, setCondition] = useState("");
   const [imageData, setImageData] = useState("");
-  const [dragging, setDragging] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-
-  const processFile = useCallback((file: File) => {
-    if (!file.type.startsWith("image/")) {
-      setError("Please upload an image file (JPG, PNG, etc.).");
-      return;
-    }
-    if (file.size > 2 * 1024 * 1024) {
-      setError("Image must be under 2 MB.");
-      return;
-    }
-    setError("");
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = e.target?.result as string;
-      // Resize to max 800px wide to keep base64 string reasonable
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const maxW = 800;
-        let w = img.width;
-        let h = img.height;
-        if (w > maxW) {
-          h = (h * maxW) / w;
-          w = maxW;
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        ctx?.drawImage(img, 0, 0, w, h);
-        setImageData(canvas.toDataURL("image/jpeg", 0.7));
-      };
-      img.src = result;
-    };
-    reader.readAsDataURL(file);
-  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -255,62 +218,7 @@ export function PostForm({ orgCode, initialType, onSuccess, onCancel }: PostForm
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Photo <span className="text-gray-400">(optional)</span>
             </label>
-            {imageData ? (
-              <div className="relative inline-block">
-                <img
-                  src={imageData}
-                  alt="Preview"
-                  className="w-full max-h-48 object-cover rounded-lg border"
-                />
-                <button
-                  type="button"
-                  onClick={() => setImageData("")}
-                  className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80 transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            ) : (
-              <div
-                onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
-                onDragLeave={() => setDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setDragging(false);
-                  const file = e.dataTransfer.files[0];
-                  if (file) processFile(file);
-                }}
-                onClick={() => fileInputRef.current?.click()}
-                className={cn(
-                  "border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors",
-                  dragging
-                    ? "border-green-400 bg-green-50"
-                    : "border-gray-300 hover:border-gray-400 hover:bg-gray-50"
-                )}
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) processFile(file);
-                  }}
-                />
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                    <Camera className="w-5 h-5 text-gray-400" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">
-                      <span className="text-green-600">Upload a photo</span> or drag and drop
-                    </p>
-                    <p className="text-xs text-gray-400 mt-0.5">JPG, PNG up to 2 MB</p>
-                  </div>
-                </div>
-              </div>
-            )}
+            <PhotoUpload value={imageData} onChange={setImageData} />
           </div>
         </>
       )}

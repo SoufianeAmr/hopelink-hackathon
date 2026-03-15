@@ -66,7 +66,7 @@ export default function StaffLoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 bg-hope-blue rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Building2 className="w-7 h-7 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Staff Portal</h1>
@@ -80,18 +80,18 @@ export default function StaffLoginPage() {
             <div className="mb-5">
               <button
                 onClick={handleContinueSaved}
-                className="w-full flex items-center gap-3 bg-blue-50 border border-blue-200 rounded-lg p-4 hover:bg-blue-100 transition-colors text-left"
+                className="w-full flex items-center gap-3 bg-hope-blue-light border border-hope-blue/20 rounded-lg p-4 hover:bg-hope-blue/10 transition-colors text-left"
               >
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 bg-hope-blue rounded-lg flex items-center justify-center shrink-0">
                   <span className="text-white font-bold text-sm">
                     {savedOrg.name.charAt(0)}
                   </span>
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-semibold text-blue-900">
+                  <p className="text-sm font-semibold text-hope-blue-dark">
                     Signed in as {savedOrg.name}
                   </p>
-                  <p className="text-xs text-blue-600">Continue to Staff Workspace</p>
+                  <p className="text-xs text-hope-blue">Continue to Staff Workspace</p>
                 </div>
               </button>
               <div className="flex items-center justify-between mt-2">
@@ -121,7 +121,7 @@ export default function StaffLoginPage() {
                 onChange={(e) => setOrgCode(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleLogin()}
                 placeholder="e.g. hou-naz"
-                className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-hope-blue focus:border-hope-blue outline-none transition-all"
                 autoFocus={!savedOrg}
               />
               <p className="text-xs text-gray-400 mt-1.5">
@@ -138,7 +138,7 @@ export default function StaffLoginPage() {
             <button
               onClick={handleLogin}
               disabled={loading || !orgCode.trim()}
-              className="w-full bg-blue-600 text-white rounded-lg py-3 text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-hope-blue text-white rounded-lg py-3 text-sm font-semibold hover:bg-hope-blue-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>

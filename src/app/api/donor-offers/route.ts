@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { findMatches } from "@/lib/matching";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/donor-offers — submit a donor offer (public, no auth)
 // Rubric: Impact — "making donation processes easier for contributors"
 // Rubric: UX — minimal fields, zero login
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { donorName, donorContact, category, item, quantity, targetOrgId, logistics } = body;
+    const { donorName, donorContact, category, item, quantity, targetOrgId, needPostId, logistics, imageUrl } = body;
 
     if (!donorName || !donorContact || !category || !item || !quantity) {
       return NextResponse.json(
@@ -25,7 +27,9 @@ export async function POST(request: NextRequest) {
         item,
         quantity: parseInt(quantity, 10),
         logistics: logistics || "either",
+        imageUrl: imageUrl || "",
         targetOrgId: targetOrgId || null,
+        needPostId: needPostId || null,
       },
     });
 
@@ -59,6 +63,9 @@ export async function GET(request: NextRequest) {
 
   const offers = await prisma.donorOffer.findMany({
     where: { targetOrgId: org.id, status: "new" },
+    include: {
+      needPost: { select: { id: true, item: true, quantity: true, category: true } },
+    },
     orderBy: { createdAt: "desc" },
   });
 
@@ -100,6 +107,7 @@ export async function PATCH(request: NextRequest) {
         item: offer.item,
         quantity: offer.quantity,
         notes: `Donor: ${offer.donorName}`,
+        imageUrl: offer.imageUrl || "",
       },
     });
 
@@ -119,21 +127,37 @@ export async function PATCH(request: NextRequest) {
       },
     });
 
-    // Auto-fulfill same-org needs in the same category
+    // Auto-fulfill needs — prioritize the exact linked need first, then others
     let fulfilled = 0;
     let haveRemaining = post.quantity;
 
-    const sameOrgNeeds = await prisma.post.findMany({
+    // Build ordered list: linked need first, then other same-org/category needs
+    const needsToFulfill: { id: string; quantity: number }[] = [];
+
+    if (offer.needPostId) {
+      const linkedNeed = await prisma.post.findUnique({
+        where: { id: offer.needPostId },
+      });
+      if (linkedNeed && linkedNeed.status === "active" && linkedNeed.type === "NEED") {
+        needsToFulfill.push({ id: linkedNeed.id, quantity: linkedNeed.quantity });
+      }
+    }
+
+    const otherNeeds = await prisma.post.findMany({
       where: {
         orgId: org.id,
         type: "NEED",
         category: offer.category,
         status: "active",
+        ...(offer.needPostId ? { id: { not: offer.needPostId } } : {}),
       },
       orderBy: { urgency: "desc" },
     });
+    for (const n of otherNeeds) {
+      needsToFulfill.push({ id: n.id, quantity: n.quantity });
+    }
 
-    for (const need of sameOrgNeeds) {
+    for (const need of needsToFulfill) {
       if (haveRemaining <= 0) break;
 
       const transferred = Math.min(haveRemaining, need.quantity);

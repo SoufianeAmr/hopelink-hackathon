@@ -34,9 +34,10 @@ model Post {
   notes      String    @default("")
   condition  String    @default("") // e.g. "needs cleaning", "new in box", "gently used"
   imageUrl   String    @default("") // optional photo URL for bulky items
-  haveMatches Match[] @relation("HavePost")
-  needMatches Match[] @relation("NeedPost")
-  createdAt  DateTime  @default(now())
+  haveMatches  Match[] @relation("HavePost")
+  needMatches  Match[] @relation("NeedPost")
+  donorOffers  DonorOffer[] @relation("DonorOfferNeed")
+  createdAt    DateTime  @default(now())
 }
 
 // A match between a HAVE post and a NEED post
@@ -60,8 +61,11 @@ model DonorOffer {
   item         String
   quantity     Int
   logistics    String   @default("either") // pickup | delivery | either
+  imageUrl     String   @default("") // optional photo of donated item
   targetOrgId  String?
   targetOrg    Organization? @relation(fields: [targetOrgId], references: [id])
+  needPostId   String?
+  needPost     Post?    @relation("DonorOfferNeed", fields: [needPostId], references: [id])
   status       String   @default("new") // new | accepted | completed
   createdAt    DateTime @default(now())
 }

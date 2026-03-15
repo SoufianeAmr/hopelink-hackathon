@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
+// Force dynamic — must always return fresh data so fulfilled needs disappear
+export const dynamic = "force-dynamic";
+
 // GET /api/donor-needs — public aggregated needs for the donor board
 // Rubric: Impact — serves the Donor user. Rubric: UX — zero auth, public.
 export async function GET() {
   const needs = await prisma.post.findMany({
-    where: { type: "NEED", status: "active" },
+    where: { type: "NEED", status: "active", quantity: { gt: 0 } },
     include: { org: { select: { name: true, id: true } } },
     orderBy: [{ urgency: "desc" }, { createdAt: "desc" }],
   });
@@ -17,36 +20,31 @@ export async function GET() {
       category: string;
       totalQuantity: number;
       highestUrgency: string;
-      organizations: { name: string; id: string; item: string; quantity: number }[];
+      organizations: { name: string; id: string; postId: string; item: string; quantity: number }[];
     }
   >();
 
   for (const need of needs) {
     const existing = categoryMap.get(need.category);
+    const orgEntry = {
+      name: need.org.name,
+      id: need.org.id,
+      postId: need.id,
+      item: need.item,
+      quantity: need.quantity,
+    };
     if (existing) {
       existing.totalQuantity += need.quantity;
       if (need.urgency === "critical") existing.highestUrgency = "critical";
       else if (need.urgency === "moderate" && existing.highestUrgency !== "critical")
         existing.highestUrgency = "moderate";
-      existing.organizations.push({
-        name: need.org.name,
-        id: need.org.id,
-        item: need.item,
-        quantity: need.quantity,
-      });
+      existing.organizations.push(orgEntry);
     } else {
       categoryMap.set(need.category, {
         category: need.category,
         totalQuantity: need.quantity,
         highestUrgency: need.urgency,
-        organizations: [
-          {
-            name: need.org.name,
-            id: need.org.id,
-            item: need.item,
-            quantity: need.quantity,
-          },
-        ],
+        organizations: [orgEntry],
       });
     }
   }

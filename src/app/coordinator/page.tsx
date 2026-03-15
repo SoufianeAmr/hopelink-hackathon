@@ -140,8 +140,8 @@ export default function CoordinatorPage() {
       </div>
 
       {/* Info banner — reinforces that this is oversight, not control */}
-      <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 mb-6 flex items-center justify-between gap-3">
-        <p className="text-sm text-emerald-800">
+      <div className="bg-hope-green-light border border-hope-green/20 rounded-lg p-3 mb-6 flex items-center justify-between gap-3">
+        <p className="text-sm text-hope-green">
           <strong>Coordinator view:</strong> Monitor network activity, track matches,
           and identify gaps. Organizations coordinate directly.
         </p>
@@ -149,7 +149,7 @@ export default function CoordinatorPage() {
           <div className="flex gap-2 shrink-0">
             <button
                 onClick={handleExport}
-                className="text-xs bg-white border border-emerald-300 text-emerald-700 px-3 py-1.5 rounded-md hover:bg-emerald-50 transition-colors font-medium"
+                className="text-xs bg-white border border-hope-green/30 text-hope-green px-3 py-1.5 rounded-md hover:bg-hope-green-light transition-colors font-medium"
                 >
               Generate Network Report
             </button>

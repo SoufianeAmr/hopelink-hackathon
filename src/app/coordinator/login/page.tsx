@@ -43,7 +43,7 @@ export default function CoordinatorLoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 bg-hope-green rounded-2xl flex items-center justify-center mx-auto mb-4">
             <BarChart3 className="w-7 h-7 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Coordinator Portal</h1>
@@ -58,16 +58,16 @@ export default function CoordinatorLoginPage() {
             <div className="mb-5">
               <button
                 onClick={handleContinue}
-                className="w-full flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-lg p-4 hover:bg-emerald-100 transition-colors text-left"
+                className="w-full flex items-center gap-3 bg-hope-green-light border border-hope-green/20 rounded-lg p-4 hover:bg-hope-green/10 transition-colors text-left"
               >
-                <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 bg-hope-green rounded-lg flex items-center justify-center shrink-0">
                   <BarChart3 className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-semibold text-emerald-900">
+                  <p className="text-sm font-semibold text-hope-green">
                     Signed in as GMHSC Coordinator
                   </p>
-                  <p className="text-xs text-emerald-600">Continue to Coordinator Dashboard</p>
+                  <p className="text-xs text-hope-green">Continue to Coordinator Dashboard</p>
                 </div>
               </button>
               <div className="flex items-center justify-between mt-2">
@@ -97,7 +97,7 @@ export default function CoordinatorLoginPage() {
                 onChange={(e) => setCode(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleLogin()}
                 placeholder="Enter coordinator code"
-                className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-hope-green focus:border-hope-green outline-none transition-all"
                 autoFocus={!hasSaved}
               />
               <p className="text-xs text-gray-400 mt-1.5">
@@ -114,7 +114,7 @@ export default function CoordinatorLoginPage() {
             <button
               onClick={handleLogin}
               disabled={!code.trim()}
-              className="w-full bg-emerald-600 text-white rounded-lg py-3 text-sm font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-hope-green text-white rounded-lg py-3 text-sm font-semibold hover:bg-hope-green/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Sign In
             </button>
@@ -126,8 +126,8 @@ export default function CoordinatorLoginPage() {
           <p className="text-xs text-gray-400">gmhsc-coord</p>
         </div>
 
-        <div className="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
-          <p className="text-xs text-emerald-700">
+        <div className="mt-3 bg-hope-green-light border border-hope-green/15 rounded-xl p-4">
+          <p className="text-xs text-hope-green">
             <strong>Read-only access.</strong> Coordinators can monitor all network activity
             but cannot modify posts or approve transfers. Organizations coordinate directly.
           </p>

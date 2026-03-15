@@ -62,11 +62,11 @@ export function MatchCard({
   // Card border color based on status
   const borderColor = status === "requested"
     ? "border-amber-300 bg-amber-50"
-    : "border-blue-200 bg-blue-50";
+    : "border-hope-blue/20 bg-hope-blue-light";
 
   const headerColor = status === "requested"
     ? "bg-amber-500"
-    : "bg-blue-600";
+    : "bg-hope-blue";
 
   const headerText = status === "requested"
     ? isHaveSide
@@ -84,7 +84,7 @@ export function MatchCard({
         </div>
         <span className={cn(
           "font-semibold text-sm",
-          status === "requested" ? "text-amber-900" : "text-blue-900"
+          status === "requested" ? "text-amber-900" : "text-hope-blue-dark"
         )}>
           {headerText}
         </span>
@@ -133,7 +133,7 @@ export function MatchCard({
         <div className="flex justify-center">
           <span className={cn(
             "text-lg",
-            status === "requested" ? "text-amber-400" : "text-blue-400"
+            status === "requested" ? "text-amber-400" : "text-hope-blue"
           )}>↓</span>
         </div>
         <div className="bg-white rounded p-2">
@@ -164,7 +164,7 @@ export function MatchCard({
       {/* Transfer preview */}
       <div className={cn(
         "rounded p-2 mb-3 text-xs",
-        status === "requested" ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"
+        status === "requested" ? "bg-amber-100 text-amber-800" : "bg-hope-blue-light text-hope-blue-dark"
       )}>
         <p>
           <strong>Transfer:</strong> {transferQty} items
@@ -198,7 +198,7 @@ export function MatchCard({
           <>
             <button
               onClick={() => onRequest(matchId)}
-              className="flex-1 bg-blue-600 text-white rounded-md py-2 px-3 text-sm font-medium hover:bg-blue-700 transition-colors touch-target"
+              className="flex-1 bg-hope-blue text-white rounded-md py-2 px-3 text-sm font-medium hover:bg-hope-blue-dark transition-colors touch-target"
             >
               Request Transfer ({transferQty})
             </button>
