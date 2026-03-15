@@ -2,47 +2,71 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/staff/login", label: "Staff", shortLabel: "Staff", match: "/staff" },
-  { href: "/coordinator/login", label: "Coordinator", shortLabel: "Coord.", match: "/coordinator" },
-  { href: "/donor/start", label: "Donor Board", shortLabel: "Donors", match: "/don" },
+  {
+    href: "/staff/login",
+    label: "Organization",
+    shortLabel: "Org.",
+    match: "/staff",
+    hoverClass:
+      "hover:text-[rgb(37,99,235)] hover:bg-[rgba(37,99,235,0.10)]",
+    activeClass: "text-[rgb(37,99,235)] bg-[rgba(37,99,235,0.14)]",
+  },
+  {
+    href: "/coordinator/login",
+    label: "Coordinator",
+    shortLabel: "Coord.",
+    match: "/coordinator",
+    hoverClass:
+      "hover:text-[rgb(5,150,105)] hover:bg-[rgba(5,150,105,0.10)]",
+    activeClass: "text-[rgb(5,150,105)] bg-[rgba(5,150,105,0.14)]",
+  },
+  {
+    href: "/donor/start",
+    label: "Donor Board",
+    shortLabel: "Donors",
+    match: "/donor",
+    hoverClass:
+      "hover:text-[rgb(147,51,234)] hover:bg-[rgba(147,51,234,0.10)]",
+    activeClass: "text-[rgb(147,51,234)] bg-[rgba(147,51,234,0.14)]",
+  },
 ];
 
 export function NavBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6">
-        <div className="flex items-center justify-between h-14">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">H</span>
-            </div>
-            <span className="font-bold text-lg text-gray-900 hidden sm:inline">HopeLink</span>
-          </Link>
+    <header className="bg-white border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-[rgb(37,99,235)] flex items-center justify-center">
+            <span className="text-white font-bold">H</span>
+          </div>
+          <span className="text-2xl font-semibold text-gray-900">HopeLink</span>
+        </Link>
 
-          <div className="flex items-center gap-0.5 sm:gap-1">
-            {links.map((link) => (
+        <nav className="flex items-center gap-2">
+          {links.map((link) => {
+            const isActive = pathname.startsWith(link.match);
+
+            return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn(
-                  "px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium transition-colors",
-                  pathname.startsWith(link.match)
-                    ? "bg-blue-50 text-blue-700"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                )}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  isActive
+                    ? link.activeClass
+                    : `text-gray-600 ${link.hoverClass}`
+                }`}
               >
-                <span className="sm:hidden">{link.shortLabel}</span>
                 <span className="hidden sm:inline">{link.label}</span>
+                <span className="sm:hidden">{link.shortLabel}</span>
               </Link>
-            ))}
-          </div>
-        </div>
+            );
+          })}
+        </nav>
       </div>
-    </nav>
+    </header>
   );
 }

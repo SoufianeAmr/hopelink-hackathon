@@ -10,13 +10,13 @@
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev --name init",
-    "db:seed": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' prisma/seed.ts",
-    "db:clean": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' prisma/clean.ts",
+    "db:seed": "npx ts-node -O \"{\\\"module\\\":\\\"commonjs\\\"}\" prisma/seed.ts",
+    "db:clean": "npx ts-node -O \"{\\\"module\\\":\\\"commonjs\\\"}\" prisma/clean.ts",
     "db:reset": "npx prisma migrate reset --force",
     "setup": "npm run db:generate && npm run db:migrate && npm run db:seed"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"commonjs\"} prisma/seed.ts"
+    "seed": "ts-node -O \"{\\\"module\\\":\\\"commonjs\\\"}\" prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.2",

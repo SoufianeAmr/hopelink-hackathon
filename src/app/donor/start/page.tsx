@@ -14,7 +14,7 @@ export default function DonorStartPage() {
           <div className="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Heart className="w-7 h-7 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Community Donor Board</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Donor Board</h1>
           <p className="text-sm text-gray-500 mt-2">
             See what the GMHSC network needs right now and offer to help.
           </p>

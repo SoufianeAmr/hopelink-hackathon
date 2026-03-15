@@ -203,25 +203,29 @@ export default function DonatePage() {
                         />
                         <div>
                           <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                            I can...
+                            Logistics preferences :
                           </label>
-                          <div className="flex gap-2">
-                            {(["pickup", "delivery", "either"] as const).map((opt) => (
-                              <button
-                                key={opt}
-                                type="button"
-                                onClick={() => setFormData({ ...formData, logistics: opt })}
-                                className={cn(
-                                  "flex-1 py-2 rounded-md text-xs font-medium transition-colors",
-                                  formData.logistics === opt
-                                    ? "bg-blue-600 text-white"
-                                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                )}
-                              >
-                                {opt === "pickup" ? "Pick up" : opt === "delivery" ? "Deliver" : "Either"}
-                              </button>
-                            ))}
-                          </div>
+<div className="flex gap-2">
+  {(["pickup", "delivery", "either"] as const).map((opt) => (
+    <button
+      key={opt}
+      type="button"
+      onClick={() => setFormData({ ...formData, logistics: opt })}
+      className={cn(
+        "flex-1 py-2 rounded-md text-xs font-medium transition-all",
+        formData.logistics === opt
+          ? "bg-[rgb(37,99,235)] text-white"
+          : "bg-gray-100 text-gray-600 hover:bg-[rgba(37,99,235,0.10)] hover:text-[rgb(37,99,235)]"
+      )}
+    >
+      {opt === "pickup"
+        ? "Organization picks up"
+        : opt === "delivery"
+        ? "I can deliver"
+        : "Flexible"}
+    </button>
+  ))}
+</div>
                         </div>
                         {formError && (
                           <p className="text-red-600 text-sm">{formError}</p>
