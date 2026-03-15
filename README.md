@@ -223,13 +223,3 @@ HopeLink is designed for immediate deployment:
 - No external API dependencies: $0/month
 - **Total operational cost: $0**
 
-## Team
-
-- [Name] — [Role]
-- [Name] — [Role]
-- [Name] — [Role]
-- [Name] — [Role]
-
-## License
-
-MIT
