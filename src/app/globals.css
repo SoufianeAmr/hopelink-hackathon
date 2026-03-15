@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Rubric: UX — large touch targets for mobile, high contrast text */
+@layer utilities {
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+}

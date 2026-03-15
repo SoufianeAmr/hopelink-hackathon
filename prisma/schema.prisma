@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Each GMHSC member organization
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  code      String   @unique // simple access code, e.g. "hou-naz"
+  type      String   // shelter | outreach | service | coordinator
+  phone     String   @default("")
+  posts     Post[]
+  donorOffers DonorOffer[]
+  createdAt DateTime @default(now())
+}
+
+// A "We Have" or "We Need" post from an organization
+model Post {
+  id         String    @id @default(cuid())
+  orgId      String
+  org        Organization @relation(fields: [orgId], references: [id])
+  type       String    // HAVE | NEED
+  category   String    // from predefined list
+  item       String    // specific description
+  quantity   Int
+  urgency    String    @default("low") // low | moderate | critical
+  expiryDate DateTime? // only for perishable/time-sensitive items
+  status     String    @default("active") // active | matched | resolved | expired
+  notes      String    @default("")
+  condition  String    @default("") // e.g. "needs cleaning", "new in box", "gently used"
+  imageUrl   String    @default("") // optional photo URL for bulky items
+  haveMatches Match[] @relation("HavePost")
+  needMatches Match[] @relation("NeedPost")
+  createdAt  DateTime  @default(now())
+}
+
+// A match between a HAVE post and a NEED post
+model Match {
+  id         String    @id @default(cuid())
+  havePostId String
+  havePost   Post      @relation("HavePost", fields: [havePostId], references: [id])
+  needPostId String
+  needPost   Post      @relation("NeedPost", fields: [needPostId], references: [id])
+  status     String    @default("pending") // pending | requested | resolved | dismissed
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
+}
+
+// A donor's offer to help (submitted from public donor board)
+model DonorOffer {
+  id           String   @id @default(cuid())
+  donorName    String
+  donorContact String   // email or phone
+  category     String
+  item         String
+  quantity     Int
+  logistics    String   @default("either") // pickup | delivery | either
+  targetOrgId  String?
+  targetOrg    Organization? @relation(fields: [targetOrgId], references: [id])
+  status       String   @default("new") // new | accepted | completed
+  createdAt    DateTime @default(now())
+}
+
+// Network activity feed events
+model FeedEvent {
+  id        String   @id @default(cuid())
+  type      String   // post_have | post_need | match_found | match_resolved | expiry_alert | donor_offer
+  message   String
+  orgName   String   @default("")
+  category  String   @default("")
+  createdAt DateTime @default(now())
+}

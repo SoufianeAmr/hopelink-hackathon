@@ -1,0 +1,40 @@
+{
+  "name": "hopelink",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Real-time donation coordination hub for the GMHSC network",
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev --name init",
+    "db:seed": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' prisma/seed.ts",
+    "db:clean": "npx ts-node --compiler-options '{\"module\":\"commonjs\"}' prisma/clean.ts",
+    "db:reset": "npx prisma migrate reset --force",
+    "setup": "npm run db:generate && npm run db:migrate && npm run db:seed"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"commonjs\"} prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.577.0",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "prisma": "^6.19.2",
+    "tailwindcss": "^3.4.19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
